@@ -14,8 +14,6 @@ namespace TP_dev
 
             montab[0, 0] = "2";
             
-
-            
             montab[1, 0] = "Charisma";
 
             return montab;

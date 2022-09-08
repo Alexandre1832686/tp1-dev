@@ -19,18 +19,69 @@ namespace TP_dev
             Race laRace;
 
             Console.WriteLine("Quel class Voulez vous?");
-            string classdeperso = "barbare";//= Console.ReadLine();
+            Console.WriteLine("");
+            Console.WriteLine("1- Barbare");
+            Console.WriteLine("2- Bard");
+            Console.WriteLine("3- Cleric");
+            Console.WriteLine("4- Druid");
+            Console.WriteLine("5- Fighter");
+            Console.WriteLine("6- Monk");
+            Console.WriteLine("7- Paladin");
+            Console.WriteLine("8- Ranger");
+            Console.WriteLine("9- Rogue");
+            Console.WriteLine("10- Sorcerer");
+            Console.WriteLine("11- Warlock");
+            Console.WriteLine("12- Wizard");
+            Console.WriteLine("");
+
+            string classdeperso = Console.ReadLine();
+
+
             switch(classdeperso)
             {
-                case "barbare":
+                case "1":
                     laClasse = new barbare();
+                    break;
+                case "2":
+                    laClasse = new Bard();
+                    break;
+                case "3":
+                    laClasse = new Cleric();
+                    break;
+                case "4":
+                    laClasse = new Druid();
+                    break;
+                case "5":
+                    laClasse = new Fighter();
+                    break;
+                case "6":
+                    laClasse = new Monk();
+                    break;
+                case "7":
+                    laClasse = new Paladin();
+                    break;
+                case "8":
+                    laClasse = new Ranger();
+                    break;
+                case "9":
+                    laClasse = new Rogue();
+                    break;
+                case "10":
+                    laClasse = new Sorcerer();
+                    break;
+                case "11":
+                    laClasse = new Warlock();
+                    break;
+                case "12":
+                    laClasse = new Wizard();
                     break;
                 default:
                     laClasse = new barbare();
                     break;
-                        
+
             }
 
+            Console.WriteLine("");
             Console.WriteLine("Quel race Voulez vous?");
             Console.WriteLine("");
             Console.WriteLine("1- Dragonborn");
@@ -174,7 +225,7 @@ namespace TP_dev
             monPerso.Wisdom = LancerPourStats() + bonusWisdom;
             monPerso.Charisma = LancerPourStats() + bonusCharisma;
 
-            Console.WriteLine("\t PV : " + ((monPerso.Constitution -10) / 2 +" "+ De.lancerDe(8)));
+            Console.WriteLine("\t PV : " + ((monPerso.Constitution -10) / 2 + De.lancerDe(monPerso.classePerso.Attack()))); // à faire************
             Console.WriteLine("\t Strength : " + monPerso.Strength );
             Console.WriteLine("\t Dexterity : " + monPerso.Dexterity);
             Console.WriteLine("\t Constitution : " + monPerso.Constitution);
@@ -214,6 +265,8 @@ namespace TP_dev
                 return nb;
             }
         }
+
+        
 
     }
 

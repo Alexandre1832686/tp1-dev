@@ -44,21 +44,32 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="barbare.cs" />
+    <Compile Include="Bard.cs" />
     <Compile Include="ClassePerso.cs" />
+    <Compile Include="Cleric.cs" />
     <Compile Include="De.cs" />
     <Compile Include="Dragonborn.cs" />
+    <Compile Include="Druid.cs" />
     <Compile Include="Dwarf.cs" />
     <Compile Include="elf.cs" />
+    <Compile Include="Fighter.cs" />
     <Compile Include="Gnome.cs" />
     <Compile Include="Half-Elf.cs" />
     <Compile Include="Half-Orc.cs" />
     <Compile Include="Halfling.cs" />
     <Compile Include="Humain.cs" />
+    <Compile Include="Monk.cs" />
+    <Compile Include="Paladin.cs" />
     <Compile Include="perso.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Race.cs" />
+    <Compile Include="Ranger.cs" />
+    <Compile Include="Rogue.cs" />
+    <Compile Include="Sorcerer.cs" />
     <Compile Include="Tiefling.cs" />
+    <Compile Include="Warlock.cs" />
+    <Compile Include="Wizard.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

@@ -6,12 +6,11 @@ using System.Threading.Tasks;
 
 namespace TP_dev
 {
-    public abstract class ClassePerso
+    class Ranger : ClassePerso
     {
-        public virtual int Attack()
+        public override int Attack()
         {
-            return 8;
+            return 10;
         }
-
     }
 }

@@ -6,12 +6,7 @@ using System.Threading.Tasks;
 
 namespace TP_dev
 {
-    public abstract class ClassePerso
+    class Monk : ClassePerso
     {
-        public virtual int Attack()
-        {
-            return 8;
-        }
-
     }
 }

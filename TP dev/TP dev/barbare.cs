@@ -9,9 +9,9 @@ namespace TP_dev
     class barbare : ClassePerso
     {
 
-        public override int test()
+        public override int Attack()
         {
-            return 6;
+            return 12;
         }
 
     }
