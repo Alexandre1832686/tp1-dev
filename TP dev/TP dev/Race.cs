@@ -8,9 +8,8 @@ namespace TP_dev
 {
     public abstract class Race
     {
-        int test2;
-
-        public abstract int GetTest();
+        
+        public abstract string[,] GetBonusRace();
         
     }
 }

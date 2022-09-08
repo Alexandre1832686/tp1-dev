@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace TP_dev
 {
-    public class ClassePerso
+    public abstract class ClassePerso
     {
+
+        public abstract int test();
+
     }
 }

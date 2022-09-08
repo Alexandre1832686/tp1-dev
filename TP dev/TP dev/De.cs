@@ -6,13 +6,14 @@ using System.Threading.Tasks;
 
 namespace TP_dev
 {
-    class barbare : ClassePerso
+    public static class De
     {
 
-        public override int test()
-        {
-            return 6;
-        }
+        static Random random = new Random();
 
+        public static int lancerDe(int maxDe)
+        {
+            return random.Next(1, maxDe + 1);
+        }
     }
 }

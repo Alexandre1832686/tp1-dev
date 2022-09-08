@@ -9,8 +9,16 @@ namespace TP_dev
     public class perso
     {
         public Race race;
-        ClassePerso classePerso;
-        
+        public ClassePerso classePerso;
+
+        public int Strength { get; set; }
+        public int Dexterity { get; set; }
+        public int Constitution { get; set; }
+        public int Intelligence { get; set; }
+        public int Wisdom { get; set; }
+        public int Charisma { get; set; }
+
+
         public perso(Race race, ClassePerso classePerso)
         {
             this.race = race;
@@ -20,6 +28,8 @@ namespace TP_dev
         {
 
         }
+        
+        
        
     }
 }

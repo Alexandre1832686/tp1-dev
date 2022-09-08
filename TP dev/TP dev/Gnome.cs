@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace TP_dev
 {
-    class elf : Race
+    class Gnome : Race
     {
-
-
         public override string[,] GetBonusRace()
         {
             string[,] montab = new string[2, 1];
@@ -18,11 +16,10 @@ namespace TP_dev
             
 
             
-            montab[1, 0] = "Dexterity";
-            
+            montab[1, 0] = "Intelligence";
+           
 
             return montab;
         }
-
     }
 }
