@@ -68,6 +68,7 @@
     <Compile Include="Rogue.cs" />
     <Compile Include="Sorcerer.cs" />
     <Compile Include="Tiefling.cs" />
+    <Compile Include="traitementExtrene.cs" />
     <Compile Include="Warlock.cs" />
     <Compile Include="Wizard.cs" />
   </ItemGroup>
