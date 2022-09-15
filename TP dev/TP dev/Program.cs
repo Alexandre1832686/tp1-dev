@@ -14,19 +14,29 @@ namespace TP_dev
             Console.WriteLine("1- enregistrer un nouveau personnage");
             Console.WriteLine("2- Utiliser un personnage existant");
 
+
+
             string rep = Console.ReadLine();
 
-            switch(rep)
+            string entréNom = "";
+            
+            if (rep == "2")
+            {
+                Console.WriteLine("Quel est le nom du perso?");
+                entréNom = Console.ReadLine();
+            }
+
+            switch (rep)
             {
                 case "1":
                     CréerFiche();
                     break;
                 case "2":
-                    GetFichePerso();
+                    traitementExtrene.GetPerso(entréNom);
                     break;
             }
 
-            CréerFiche();
+            
         }
 
         static void CréerFiche()
@@ -147,40 +157,51 @@ namespace TP_dev
 
             }
 
-            perso monPerso = new perso(laRace, laClasse);
 
-            
-
-           
-            
+            Console.WriteLine("Quel nom voulez vous donner au personnage?");
+            string nom = Console.ReadLine();
 
 
-            Console.WriteLine("");
-            Console.WriteLine("Coninuer?");
-            Console.ReadLine();
-            Console.Clear();
+            perso monPerso = new perso(laRace, laClasse, classdeperso, racedeperso, nom);
 
-            monPerso.MakeStats();
-            
-            
+            string rep;
+
+            do
+            {
+                Console.Clear();
+
+                Console.WriteLine("Que voulez vous faire?");
+                Console.WriteLine("1- changer de personnage");
+                Console.WriteLine("2- utiliser celui-ci");
+                Console.WriteLine("3- créer un nouveau personnage");
+                Console.WriteLine("4- Quiter");
+
+                string entréNom ="";
+                rep = Console.ReadLine();
+                if (rep =="1")
+                {
+                    Console.WriteLine("Quel est le nom du perso?");
+                     entréNom = Console.ReadLine();
+                }
+                    switch (rep)
+                    {
+                    case "1":
+                        traitementExtrene.GetPerso(entréNom);
+                        break;
+                    case "2":
+                        monPerso.SetXp(40);
+                        break;
+                    case "3":
+                        CréerFiche();
+                        break;
+                    case "4":
+                        break;
+                }
+            } while (rep != "4");
+
+
         }
 
-
-
-
-
-        static void GetFichePerso(string nom)
-        {
-
-        }
-
-       
-
-
-    }
-
-   
-
-    
-    
+        
+    }  
 }
