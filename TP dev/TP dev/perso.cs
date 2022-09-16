@@ -7,9 +7,6 @@ using System.IO;
 
 namespace TP_dev
 {
-
-
-
     public class perso
     {
         public Race race;
@@ -27,10 +24,7 @@ namespace TP_dev
         public int Intelligence { get; set; }
         public int Wisdom { get; set; }
         public int Charisma { get; set; }
-
-
-        
-        
+       
 
         public perso(Race race, ClassePerso classePerso, string intrace,string intclass, string nom)
         {
@@ -43,9 +37,10 @@ namespace TP_dev
             this.Niveau = 1;
             this.XP = 0;
             this.Nom = nom;
+            this.PV = (this.Constitution - 10) / 2 + De.lancerDe(this.classePerso.Attack());
             this.MakeStats();
         }
-        public perso(Race race, ClassePerso classePerso, string intrace, string intclass, string nom, int Strength_p, int Dexterity_p, int Constitution_p, int Intelignece_p, int Wisdom_p, int Charisma_p)
+        public perso(Race race, ClassePerso classePerso, string intrace, string intclass, string nom, int Strength_p, int Dexterity_p, int Constitution_p, int Intelignece_p, int Wisdom_p, int Charisma_p, int pv)
         {
 
             raceString = intrace;
@@ -58,6 +53,7 @@ namespace TP_dev
             this.Nom = nom;
 
             this.Strength = Strength_p;
+            this.PV = pv;
             this.Dexterity = Dexterity_p;
             this.Constitution = Constitution_p;
             this.Intelligence = Intelignece_p;
@@ -65,26 +61,10 @@ namespace TP_dev
             this.Charisma = Charisma_p;
         }
 
-        //AfficherStat pour perso
+        
         public void MakeStats()
         {
-            Console.WriteLine("|******************************|");
-            Console.WriteLine("|          Statistiques        |");
-            Console.WriteLine("|******************************|");
-
-            Console.WriteLine("");
-
-
-
-
-            for (int i = 0; i < this.race.GetBonusRace().GetLength(1); i++)
-            {
-                Console.WriteLine("Bonus racial : " + this.race.GetBonusRace()[0, 0 + i] + " + " + this.race.GetBonusRace()[1, 0 + i]);
-
-            }
-
-            Console.WriteLine("");
-            Console.WriteLine("");
+            
 
             int bonusStrength = 0;
             for (int i = 0; i < this.race.GetBonusRace().GetLength(1); i++)
@@ -143,19 +123,38 @@ namespace TP_dev
             this.Intelligence = LancerPourStats() + bonusIntelligence;
             this.Wisdom = LancerPourStats() + bonusWisdom;
             this.Charisma = LancerPourStats() + bonusCharisma;
-            this.PV = (this.Constitution - 10) / 2 + De.lancerDe(this.classePerso.Attack());
+           
 
-            SaveFiche(Nom, classString, raceString, XP.ToString(), Strength.ToString(), Dexterity.ToString(), Constitution.ToString(), Intelligence.ToString(), Wisdom.ToString(), Charisma.ToString());
+            SaveFiche(Nom, classString, raceString, XP.ToString(), Strength.ToString(), Dexterity.ToString(), Constitution.ToString(), Intelligence.ToString(), Wisdom.ToString(), Charisma.ToString(), PV);
 
             AfficherFiche();
 
-            Console.ReadLine();
+            
 
             Console.Clear();
             Console.WriteLine("Que voulez vous faire?");
             Console.WriteLine("1- retourner au menu");
             Console.WriteLine("2- Recevoir de l'xp");
+            bool verif = false;
+            do
+            {
+                string rep = Console.ReadLine();
+                verif = true;
 
+                switch (rep)
+                {
+                    case "1":
+                        Program.Menu(this);
+                        break;
+                    case "2":
+                        SetXp(30);
+                        break;
+                    default:
+                        verif = false;
+                        break;
+
+                }
+            } while (verif == false);
 
         }
 
@@ -239,10 +238,10 @@ namespace TP_dev
 
             AfficherFiche();
 
-            SaveFiche(Nom, classString, raceString, XP.ToString(), Strength.ToString(), Dexterity.ToString(), Constitution.ToString(), Intelligence.ToString(), Wisdom.ToString(), Charisma.ToString());
+            SaveFiche(Nom, classString, raceString, XP.ToString(), Strength.ToString(), Dexterity.ToString(), Constitution.ToString(), Intelligence.ToString(), Wisdom.ToString(), Charisma.ToString(), PV);
         }
 
-        public static void SaveFiche(string nom, string classperso, string race, string xp, string strengh, string dexterity, string constitution, string intel, string wisdom, string charisma)
+        public static void SaveFiche(string nom, string classperso, string race, string xp, string strengh, string dexterity, string constitution, string intel, string wisdom, string charisma, int HP)
         {
 
             bool check = false;
@@ -252,15 +251,15 @@ namespace TP_dev
             }
             
             
-            using (StreamWriter sw = new StreamWriter("../../../perso.csv"))
+            using (StreamWriter sw = new StreamWriter("../../../perso.csv", append: true))
             {
                 
                 if(!check)
                 {
-                    sw.WriteLine("Nom,"+"Class,"+"Race," +"Xp," + "Force," + "Dexterité," + "Constitution," + "Intelligence,"+ "Wisdom,"+ "Charisma");
+                    sw.WriteLine("Nom,"+"Class,"+"Race," +"Xp," + "Force," + "Dexterité," + "Constitution," + "Intelligence,"+ "Wisdom,"+ "Charisma" + "HP");
                 }
 
-                sw.WriteLine(nom+","+classperso+"," + race+"," + xp+"," + strengh +","+ dexterity+","+ constitution+","+ intel+","+ wisdom+","+ charisma);
+                sw.WriteLine(nom+","+classperso+"," + race+"," + xp+"," + strengh +","+ dexterity+","+ constitution+","+ intel+","+ wisdom+","+ charisma +","+ HP);
             }
         }
         void LevelUp()
@@ -279,27 +278,162 @@ namespace TP_dev
             }
 
             this.PV += pvadd;
-
-            Console.WriteLine("Voulez vous faire :");
-            Console.WriteLine("1- Augmenter une carac de 2");
-            Console.WriteLine("2- augmenter 2 carac de 1");
-
-            string rep = Console.ReadLine();
-
-            switch(rep)
+            bool verif = false;
+            do
             {
-                case "1":
+                Console.WriteLine("Voulez vous faire :");
+                Console.WriteLine("1- Augmenter une carac de 2");
+                Console.WriteLine("2- augmenter 2 carac de 1");
 
-                    break;
-                case "2":
+                string rep = Console.ReadLine();
+                if(rep != "1" && rep != "2")
+                {
+                    verif = false;
 
-                    break;
-            }
+                }
+                else
+                {
+                    verif = true;
+                }
+
+                if (rep == "1")
+                {
+                    Console.WriteLine("Quel Carac voulez vous augmenter");
+                    Console.WriteLine("1-str");
+                    Console.WriteLine("2-dex");
+                    Console.WriteLine("3-int");
+                    Console.WriteLine("4-con");
+                    Console.WriteLine("5-wis");
+                    Console.WriteLine("6-cha");
+
+                    string rep2 = Console.ReadLine();
+
+                    switch (rep2)
+                    {
+                        case "1":
+                            if (this.Strength < 19)
+                                this.Strength += 2;
+                            else
+                                verif = false;
+                            break;
+                        case "2":
+                            if (this.Dexterity < 19)
+                                this.Dexterity += 2;
+                            else
+                                verif = false;
+                            break;
+                        case "3":
+                            if (this.Intelligence < 19)
+                                this.Intelligence += 2;
+                            else
+                                verif = false;
+                            break;
+                        case "4":
+
+                            if (this.Constitution < 19)
+                            {
+                                this.Constitution += 2;
+                                if ((Math.Floor(Convert.ToDouble(this.Constitution - 10) / 2)) < (Math.Floor(Convert.ToDouble(this.Constitution - 8) / 2)))
+                                {
+                                    this.Constitution += Niveau;
+                                }
+                            }
+                            else
+                                verif = false;
+                            break;
+                        case "5":
+                            if (this.Wisdom < 19)
+                                this.Wisdom += 2;
+                            else
+                                verif = false;
+                            break;
+                        case "6":
+                            if (this.Charisma < 19)
+                                this.Charisma += 2;
+                            else
+                                verif = false;
+                            break;
+                    }
+                }
+                else if (rep == "2")
+                {
+                    for (int i = 0; i < 2; i++)
+                    {
+                        Console.WriteLine("Quel Carac voulez vous augmenter");
+                        Console.WriteLine("1-str");
+                        Console.WriteLine("2-dex");
+                        Console.WriteLine("3-int");
+                        Console.WriteLine("4-con");
+                        Console.WriteLine("5-wis");
+                        Console.WriteLine("6-cha");
+
+                        string rep2 = Console.ReadLine();
+
+                        switch (rep2)
+                        {
+                            case "1":
+                                if (this.Strength < 20)
+                                    this.Strength += 1;
+                                else
+                                    verif = false;
+                                break;
+                            case "2":
+                                if (this.Dexterity < 20)
+                                    this.Dexterity += 1;
+                                else
+                                    verif = false;
+                                break;
+                            case "3":
+                                if (this.Intelligence < 20)
+                                    this.Intelligence += 1;
+                                else
+                                    verif = false;
+                                break;
+                            case "4":
+                                if (this.Constitution < 20)
+                                {
+                                    this.Constitution += 1;
+                                    if ((Math.Floor(Convert.ToDouble(this.Constitution - 10) / 2)) < (Math.Floor(Convert.ToDouble(this.Constitution - 9) / 2)))
+                                    {
+                                        this.PV += Niveau;
+                                    }
+                                }   
+                                else
+                                    verif = false;
+                                break;
+                            case "5":
+                                if (this.Wisdom < 20)
+                                    this.Wisdom += 1;
+                                else
+                                    verif = false;
+                                break;
+                            case "6":
+                                if (this.Charisma < 20)
+                                    this.Charisma += 1;
+                                else
+                                    verif = false;
+                                break;
+                        }
+                    }
+                }
+            } while (verif == false);
+            Program.Menu(this);
         }
 
         public void AfficherFiche()
         {
+
+            Console.WriteLine("|******************************|");
+            Console.WriteLine("|          Statistiques        |");
+            Console.WriteLine("|******************************|");
+            Console.WriteLine("");
             Console.WriteLine("Nom : " + Nom);
+            Console.WriteLine("");
+            Console.WriteLine("");
+            for (int i = 0; i < this.race.GetBonusRace().GetLength(1); i++)
+            {
+                Console.WriteLine("Bonus racial : " + this.race.GetBonusRace()[0, 0 + i] + " + " + this.race.GetBonusRace()[1, 0 + i]);
+            }
             Console.WriteLine();
             Console.WriteLine("PV : " + this.PV);
             Console.WriteLine("\t Strength : " + this.Strength);
@@ -308,10 +442,10 @@ namespace TP_dev
             Console.WriteLine("\t Intelligence : " + this.Intelligence);
             Console.WriteLine("\t Wisdom : " + this.Wisdom);
             Console.WriteLine("\t Charisma : " + this.Charisma);
-
             Console.ReadLine();
         }
 
+        
 
     }
 }

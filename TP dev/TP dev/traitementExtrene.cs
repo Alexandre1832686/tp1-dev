@@ -10,43 +10,29 @@ namespace TP_dev
 {
     static public class traitementExtrene
     {
-        
-        
-        
 
         
-        
-        
-       
-
         public static perso GetPerso( string nom)
         {
             string ligne;
-            string[] stat = new string[11];
+            string[] stat = new string[12];
             using (StreamReader sr = new StreamReader("../../../perso.csv"))
             {
                 sr.ReadLine();
 
                 while ((ligne = sr.ReadLine()) != null)
                 {
-                    string[] tempstat = new string[11];
-                    tempstat = ligne.Split(',');
+                    string[] tempstat = ligne.Split(',');
+
                     if (tempstat[0]==nom)
                     {
                         stat = ligne.Split(',');
                     }
                 }
-
             }
-
 
             ClassePerso laClasse;
             Race laRace;
-
-
-
-
-            
 
             switch (stat[1])
             {
@@ -89,10 +75,8 @@ namespace TP_dev
                 default:
                     laClasse = new barbare();
                     break;
-
             }
 
-            
 
             string racedeperso = Console.ReadLine();
             switch (racedeperso)
@@ -130,12 +114,10 @@ namespace TP_dev
 
             }
 
-            perso personage = new perso(laRace, laClasse, racedeperso, stat[1],nom, Convert.ToInt32(stat[4]), Convert.ToInt32(stat[5]), Convert.ToInt32(stat[6]), Convert.ToInt32(stat[7]), Convert.ToInt32(stat[8]), Convert.ToInt32(stat[9]));
+            perso personage = new perso(laRace, laClasse, racedeperso, stat[1],nom, Convert.ToInt32(stat[4]), Convert.ToInt32(stat[5]), Convert.ToInt32(stat[6]), Convert.ToInt32(stat[7]), Convert.ToInt32(stat[8]), Convert.ToInt32(stat[9]), Convert.ToInt32(stat[10]));
 
             return personage;
            
         }
-
-
     }
 }
