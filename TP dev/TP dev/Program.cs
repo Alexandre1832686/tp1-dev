@@ -8,29 +8,33 @@ namespace TP_dev
 {
     internal class Program
     {
+
         static void Main(string[] args)
         {
             Console.WriteLine("Que voulez vous faire?");
             Console.WriteLine("1- enregistrer un nouveau personnage");
             Console.WriteLine("2- Utiliser un personnage existant");
 
-
-
             string rep = Console.ReadLine();
 
             string entréNom = "";
             
+            //Demander le nom du perso
             if (rep == "2")
             {
                 Console.WriteLine("Quel est le nom du perso?");
                 entréNom = Console.ReadLine();
             }
 
+
             switch (rep)
             {
+                //Créer une fiche
                 case "1":
                     CréerFiche();
                     break;
+
+                    //télécharge un perso
                 case "2":
                     perso personnage = traitementExtrene.GetPerso(entréNom);
                     
@@ -42,6 +46,9 @@ namespace TP_dev
             
         }
 
+        /// <summary>
+        /// Créer un personnage au complet
+        /// </summary>
         static void CréerFiche()
         {
             ClassePerso laClasse;
@@ -65,7 +72,7 @@ namespace TP_dev
 
             string classdeperso = Console.ReadLine();
 
-
+            //Attributs des la classes en fonction de la réponse  
             switch(classdeperso)
             {
                 case "1":
@@ -123,7 +130,7 @@ namespace TP_dev
             Console.WriteLine("8- Humain");
             Console.WriteLine("9- Tiefling");
 
-
+            //attribut la race en fonction de la réponse 
             string racedeperso = Console.ReadLine();
             switch (racedeperso)
             {
@@ -160,17 +167,22 @@ namespace TP_dev
 
             }
 
-
+            //Demande le nom du perso
             Console.WriteLine("Quel nom voulez vous donner au personnage?");
             string nom = Console.ReadLine();
 
-
+            //créer le perso
             perso monPerso = new perso(laRace, laClasse, classdeperso, racedeperso, nom);
 
-            
+            //renvoie au menu
             Menu(monPerso);
 
         }
+
+        /// <summary>
+        /// Affiche le menu
+        /// </summary>
+        /// <param name="monPerso"></param>
         public static void Menu(perso monPerso)
         {
             Console.Clear();
@@ -183,25 +195,35 @@ namespace TP_dev
 
             string entréNom = "";
             string rep = Console.ReadLine();
+            //demande le nom du perso
             if (rep == "1")
             {
                 Console.WriteLine("Quel est le nom du perso?");
                 entréNom = Console.ReadLine();
             }
+
+            //switch pour chaque option
             switch (rep)
             {
+                //charge un persi,affiche ses stats et retoune au menu
                 case "1":
                     perso personnage = traitementExtrene.GetPerso(entréNom);
                     
                     personnage.AfficherFiche();
                     Menu(traitementExtrene.GetPerso(entréNom));
                     break;
+
+                    //Donne de la xp
                 case "2":
                     monPerso.SetXp(15);
                     break;
+
+                    //créer un perso
                 case "3":
                     CréerFiche();
                     break;
+
+                    //ferme le programme
                 case "4":
                     break;
             }

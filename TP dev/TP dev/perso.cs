@@ -9,6 +9,7 @@ namespace TP_dev
 {
     public class perso
     {
+        //instanciation des variables et attribut
         public Race race;
         public ClassePerso classePerso;
         public string raceString { get; set; }
@@ -25,7 +26,14 @@ namespace TP_dev
         public int Wisdom { get; set; }
         public int Charisma { get; set; }
        
-
+        /// <summary>
+        /// Constructeur pour un nouveau perso
+        /// </summary>
+        /// <param name="race"></param>
+        /// <param name="classePerso"></param>
+        /// <param name="intrace"></param>
+        /// <param name="intclass"></param>
+        /// <param name="nom"></param>
         public perso(Race race, ClassePerso classePerso, string intrace,string intclass, string nom)
         {
 
@@ -40,6 +48,22 @@ namespace TP_dev
             this.PV = (this.Constitution - 10) / 2 + De.lancerDe(this.classePerso.Attack());
             this.MakeStats();
         }
+
+        /// <summary>
+        /// constructeur pour un perso existant
+        /// </summary>
+        /// <param name="race"></param>
+        /// <param name="classePerso"></param>
+        /// <param name="intrace"></param>
+        /// <param name="intclass"></param>
+        /// <param name="nom"></param>
+        /// <param name="Strength_p"></param>
+        /// <param name="Dexterity_p"></param>
+        /// <param name="Constitution_p"></param>
+        /// <param name="Intelignece_p"></param>
+        /// <param name="Wisdom_p"></param>
+        /// <param name="Charisma_p"></param>
+        /// <param name="pv"></param>
         public perso(Race race, ClassePerso classePerso, string intrace, string intclass, string nom, int Strength_p, int Dexterity_p, int Constitution_p, int Intelignece_p, int Wisdom_p, int Charisma_p, int pv)
         {
 
@@ -61,11 +85,13 @@ namespace TP_dev
             this.Charisma = Charisma_p;
         }
 
-        
+        /// <summary>
+        /// Attribution des stat aléatoire
+        /// </summary>
         public void MakeStats()
         {
             
-
+            //va chercher les bonus de chaque races
             int bonusStrength = 0;
             for (int i = 0; i < this.race.GetBonusRace().GetLength(1); i++)
             {
@@ -116,7 +142,7 @@ namespace TP_dev
                 }
             }
 
-            
+            //additionne le bonus avec un nombre aléatoire obtenu avec la fonction LancerPourStat et attribut le résultat à l'attribut
             this.Strength = LancerPourStats() + bonusStrength;
             this.Dexterity = LancerPourStats() + bonusDexterity;
             this.Constitution = LancerPourStats() + bonusConstitution;
@@ -124,13 +150,14 @@ namespace TP_dev
             this.Wisdom = LancerPourStats() + bonusWisdom;
             this.Charisma = LancerPourStats() + bonusCharisma;
            
-
+            //enregistre le perso
             SaveFiche(Nom, classString, raceString, XP.ToString(), Strength.ToString(), Dexterity.ToString(), Constitution.ToString(), Intelligence.ToString(), Wisdom.ToString(), Charisma.ToString(), PV);
-
+            
+            //affiche le perso
             AfficherFiche();
 
             
-
+            //Offre au jouer de jouer avec son perso ou de retourner au menu
             Console.Clear();
             Console.WriteLine("Que voulez vous faire?");
             Console.WriteLine("1- retourner au menu");
@@ -158,6 +185,10 @@ namespace TP_dev
 
         }
 
+        /// <summary>
+        /// Fonction qui sert a calcuer les lancé de dé pour les stats
+        /// </summary>
+        /// <returns></returns>
         int LancerPourStats()
         {
 
@@ -166,6 +197,7 @@ namespace TP_dev
             int nb3 = De.lancerDe(6);
             int nb4 = De.lancerDe(6);
 
+            //verifi les 4 lancer exclu le plus petit, additionne le reste et le renvoie
             if (nb1 < nb2 && nb1 < nb3 && nb1 < nb4)
             {
                 int nb = (nb2 + nb3 + nb4);
@@ -188,6 +220,7 @@ namespace TP_dev
             }
         }
 
+        //attribut l'xp en fonction du nomber de fois que l'utilisateur joue avec son perso
         public void SetXp( int amount)
         {
             int[] tabXp = new int[20];
@@ -211,7 +244,10 @@ namespace TP_dev
             tabXp[17] = 265000;
             tabXp[18] = 305000;
             tabXp[19] = 355000;
+
+
   
+            //tableau pour la xp
             List<int[]> tabXpNiv = new List<int[]>();
 
             for(int i = 0; i < 20; i++)
@@ -224,6 +260,7 @@ namespace TP_dev
 
             int lvl = this.Niveau;
 
+            //s'occupe de faire monter de niveau
             if(tabXpNiv[lvl - 1][0] <= this.XP + amount)
             {
                 LevelUp();
@@ -232,36 +269,56 @@ namespace TP_dev
 
 
 
-
+            //ajuste la xp total
             this.XP += amount;
 
 
             AfficherFiche();
 
+            //sauvegarde le personnage
             SaveFiche(Nom, classString, raceString, XP.ToString(), Strength.ToString(), Dexterity.ToString(), Constitution.ToString(), Intelligence.ToString(), Wisdom.ToString(), Charisma.ToString(), PV);
         }
 
+        /// <summary>
+        /// Fonction qui sauvegarde le personnage dans un fichier csv
+        /// </summary>
+        /// <param name="nom"></param>
+        /// <param name="classperso"></param>
+        /// <param name="race"></param>
+        /// <param name="xp"></param>
+        /// <param name="strengh"></param>
+        /// <param name="dexterity"></param>
+        /// <param name="constitution"></param>
+        /// <param name="intel"></param>
+        /// <param name="wisdom"></param>
+        /// <param name="charisma"></param>
+        /// <param name="HP"></param>
         public static void SaveFiche(string nom, string classperso, string race, string xp, string strengh, string dexterity, string constitution, string intel, string wisdom, string charisma, int HP)
         {
-
+            //verifi si le perso existe
             bool check = false;
             if (File.Exists("../../../perso.csv"))
             {
                 check = true;
             }
             
-            
+            //ouvre et ecrit dans le fichier csv 
             using (StreamWriter sw = new StreamWriter("../../../perso.csv", append: true))
             {
-                
+                //en-tête si le fichier n'existe pas
                 if(!check)
                 {
                     sw.WriteLine("Nom,"+"Class,"+"Race," +"Xp," + "Force," + "Dexterité," + "Constitution," + "Intelligence,"+ "Wisdom,"+ "Charisma" + "HP");
                 }
 
+                //ecrit les stats
                 sw.WriteLine(nom+","+classperso+"," + race+"," + xp+"," + strengh +","+ dexterity+","+ constitution+","+ intel+","+ wisdom+","+ charisma +","+ HP);
             }
         }
+
+        /// <summary>
+        /// Fais monter le niveau et de l'affichage
+        /// </summary>
         void LevelUp()
         {
             this.Niveau += 1;
@@ -271,12 +328,15 @@ namespace TP_dev
             Console.WriteLine("|******************************|");
             int pvadd = 0;
 
+            //Modifi les pv
             pvadd = De.lancerDe(this.classePerso.Attack()) + (this.Constitution-10) / 2;
             if(pvadd<1)
             {
                 pvadd = 1;
             }
 
+
+            //modifi les stats du au changement de niveau
             this.PV += pvadd;
             bool verif = false;
             do
@@ -296,6 +356,7 @@ namespace TP_dev
                     verif = true;
                 }
 
+                //une seule stat
                 if (rep == "1")
                 {
                     Console.WriteLine("Quel Carac voulez vous augmenter");
@@ -355,6 +416,8 @@ namespace TP_dev
                             break;
                     }
                 }
+
+                //deux stats
                 else if (rep == "2")
                 {
                     for (int i = 0; i < 2; i++)
@@ -420,6 +483,9 @@ namespace TP_dev
             Program.Menu(this);
         }
 
+        /// <summary>
+        /// S'occupe de l'affichage
+        /// </summary>
         public void AfficherFiche()
         {
 
